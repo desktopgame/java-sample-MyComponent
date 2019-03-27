@@ -19,7 +19,6 @@ import javax.swing.plaf.ComponentUI;
  * MyComponentに対応するUIクラス。
  */
 public class MyComponentUI extends ComponentUI {
-    private ExecutorService service;
     private MouseAdapter mouseHandler;
     private PropertyChangeListener propertyChangeHandler;
     private ChangeListener modelHandler;
@@ -27,20 +26,7 @@ public class MyComponentUI extends ComponentUI {
     private DefaultMyModel model;
 
     public MyComponentUI() {
-        this.service = Executors.newSingleThreadExecutor();
         this.selfOpt = Optional.empty();
-        service.submit(this::asyncUpdate);
-    }
-
-    private void asyncUpdate() {
-        while (true) {
-            try {
-                Thread.sleep(1000 / 60);
-            } catch (InterruptedException e) {
-                throw new Error(e);
-            }
-            selfOpt.ifPresent((e) -> e.repaint());
-        }
     }
 
     @Override
